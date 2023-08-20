@@ -1,0 +1,14 @@
+*.swp
+*.asc
+*.bin
+*.log
+*.json
+*.uf2
+*.dfu
+
+__pycache__/
+*.vcd
+results.xml
+stats.md
+sim_build/
+
