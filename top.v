@@ -1,4 +1,4 @@
-`define USE_PICO_EMU_RAM
+//`define USE_PICO_EMU_RAM
 
 module nanoV_top(
     input ICE_CLK,  // cpu_clk
@@ -8,7 +8,7 @@ module nanoV_top(
     input ICE_SI,   // spi_miso
     output ICE_SO,  // spi_mosi
     output ICE_SCK, // spi_clk_out
-    output SRAM_SS, // spi_select
+    output ICE_20_G3, // spi_select
 `else
     input ICE_20_G3,   // spi_miso
     output ICE_19,  // spi_mosi
@@ -52,7 +52,7 @@ module nanoV_top(
     assign ICE_SCK = spi_clk_out;
     reg spi_select, spi_mosi;
     assign ICE_SO = spi_mosi;
-    assign SRAM_SS = spi_select;
+    assign ICE_20_G3 = spi_select;
 `else
     wire spi_miso = ICE_20_G3;
     wire spi_clk_out;
@@ -142,7 +142,7 @@ module nanoV_top(
     wire uart_tx_start = is_data && connect_peripheral == PERI_UART;
     wire [7:0] uart_tx_data = data_out[7:0];
 
-    uart_tx #(.CLK_HZ(16_000_000), .BIT_RATE(115_200)) i_uart_tx(
+    uart_tx #(.CLK_HZ(17_000_000), .BIT_RATE(115_200)) i_uart_tx(
         .clk(cpu_clk),
         .resetn(rstn),
         .uart_txd(uart_txd),
@@ -151,7 +151,7 @@ module nanoV_top(
         .uart_tx_busy(uart_tx_busy) 
     );
 
-    uart_rx #(.CLK_HZ(16_000_000), .BIT_RATE(115_200)) i_uart_rx(
+    uart_rx #(.CLK_HZ(17_000_000), .BIT_RATE(115_200)) i_uart_rx(
         .clk(cpu_clk),
         .resetn(rstn),
         .uart_rxd(uart_rxd),
@@ -169,9 +169,9 @@ module nanoV_top(
     always @(posedge cpu_clk) begin
 `ifndef USE_PICO_EMU_RAM        
         if (!rstn)
-            spi_select <= 0;
+            spi_select <= 1;
         else
-            spi_select <= !spi_select_out;
+            spi_select <= spi_select_out;
 `else
         if (!rstn)
             spi_select <= 1;

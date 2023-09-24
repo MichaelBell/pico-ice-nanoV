@@ -44,7 +44,7 @@ set_io -nowarn LED_G            39
 set_io -nowarn LED_B            40
 set_io -nowarn LED_R            41
 
-set_frequency ICE_CLK 12
+set_frequency ICE_CLK 17
 
 # Silicon IO names
 set_io -nowarn IOB_6a           2

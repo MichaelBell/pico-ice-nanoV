@@ -25,7 +25,7 @@ pico_ice_bitstream.json: ${RTL}
 .SUFFIXES: .sv .elf .vcd .json .asc .bit .dfu .uf2
 
 $(PROJECT).json: $(RTL)
-	${YOSYS} -p "read_verilog ${RTL}; synth_ice40 -top $(PROJECT)_top -json $@" -DICE40 >$*.yosys.log
+	${YOSYS} -p "read_verilog ${RTL}; synth_ice40 -abc9 -top $(PROJECT)_top -json $@" -DICE40 >$*.yosys.log
 	-grep -e Error -e Warn $*.yosys.log
 
 .json.asc:
